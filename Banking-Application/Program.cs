@@ -27,7 +27,7 @@ bool running = true;
 // our main loop
 while (running)
 {
-    Console.WriteLine("\n1. Check Balance\n2. Deposit Sum\n3. Withdraw Cash\n4. Exit Menu");
+    Console.WriteLine("\n1. Check Balance\n2. Deposit Sum\n3. Withdraw Cash\n4. Transfer Balance\n5. Exit");
 
     // taking user input
     Console.Write("Choose: ");
@@ -77,7 +77,33 @@ while (running)
                 Console.WriteLine("Enter a positive amount.");
             }
             break;
+
         case "4":
+            Console.Write("Send to (name): ");
+            string targetName = Console.ReadLine();
+
+            Account target = accounts.Find(a => a.Name == targetName);
+
+            if (target == null)
+            {
+                Console.WriteLine("Receiver does not exist.");
+                break;
+            }
+
+            Console.Write("Enter amount: ");
+            decimal amt = decimal.Parse(Console.ReadLine());
+
+            if (amt > 0 && amt <= current.Balance)
+            {
+                current.Balance -= amt;
+                target.Balance += amt;
+                Console.WriteLine($"Transferred {amt} to {target.Name}. New Balance is: {current.Balance}");
+            }
+            else Console.WriteLine("Invalid transfer amount.");
+
+            break;
+
+        case "5":
             Console.WriteLine("Exiting menu...");
             running = false;
             break;
