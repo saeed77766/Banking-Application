@@ -27,7 +27,7 @@ bool running = true;
 // our main loop
 while (running)
 {
-    Console.WriteLine("\n1. Check Balance\n2. Deposit Sum\n3. Withdraw Cash\n4. Transfer Balance\n5. Exit");
+    Console.WriteLine("\n1. Check Balance\n2. Deposit Sum\n3. Withdraw Cash\n4. Transfer Balance\n5. Transaction History\n6. Exit");
 
     // taking user input
     Console.Write("Choose: ");
@@ -51,6 +51,7 @@ while (running)
             {
                 current.Balance += dep;
                 Console.WriteLine($"Deposited: {dep}, New Balance is: {current.Balance}");
+                current.History.Add($"Deposited {dep}");
 
             }
             else Console.WriteLine("Enter a positive amount.");
@@ -66,6 +67,8 @@ while (running)
                 {
                     current.Balance -= withdraw;
                     Console.WriteLine($"Withdrew: {withdraw}, New Balance is: {current.Balance}");
+                    current.History.Add($"Withdrew {withdraw}");
+
                 }
                 else
                 {
@@ -98,12 +101,23 @@ while (running)
                 current.Balance -= amt;
                 target.Balance += amt;
                 Console.WriteLine($"Transferred {amt} to {target.Name}. New Balance is: {current.Balance}");
+                current.History.Add($"Transferred {amt} to {target.Name}");
+                target.History.Add($"Received {amt} from {current.Name}");
             }
             else Console.WriteLine("Invalid transfer amount.");
 
             break;
 
         case "5":
+            Console.WriteLine($".....{current.Name}'s History ..... ");
+
+            // foreach loop
+
+            foreach (string entry in current.History)
+                Console.WriteLine(entry);
+            break;
+
+        case "6":
             Console.WriteLine("Exiting menu...");
             running = false;
             break;
@@ -119,4 +133,7 @@ class Account
 {
     public string Name { get; set; }
     public decimal Balance { get; set; }
+
+    // new() starts it as an empty list
+    public List<string> History { get; set } = new();
 }
