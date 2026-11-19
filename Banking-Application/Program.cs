@@ -1,13 +1,23 @@
 ﻿// a list is a resizable container
-List<Account> acccounts = new List<Account>();
+List<Account> accounts = new List<Account>();
 
 
-accounts.Add(new Account { Name = "Alice", Balance = 1000.00m });)
+accounts.Add(new Account { Name = "Alice", Balance = 100.00m });
+accounts.Add(new Account { Name = "Bob", Balance = 700.00m });
 
+// login
+Console.Write("Enter your name: ");
+string loginName = Console.ReadLine();
 
+// finding the account inside the list and returning the name who matches
+Account current = accounts.Find(a => a.Name == loginName);
 
-Console.WriteLine($"Account Name: {accountName}, Balance: {balance}");
-
+if (current == null)
+{
+    current = new Account { Name = loginName, Balance = 0.00m };
+    accounts.Add(current);
+    Console.WriteLine($"New account created for {loginName}");
+}
 
 //menu
 
@@ -28,7 +38,7 @@ while (running)
     switch (choice)
     {
         case "1":
-            Console.WriteLine($"Balance: {balance}");
+            Console.WriteLine($"Balance: {current.Balance}");
             break;
 
         case "2":
@@ -39,8 +49,8 @@ while (running)
 
             if (dep > 0)
             {
-                balance += dep;
-                Console.WriteLine($"Deposited: {dep}, New Balance is: {balance}");
+                current.Balance += dep;
+                Console.WriteLine($"Deposited: {dep}, New Balance is: {current.Balance}");
 
             }
             else Console.WriteLine("Enter a positive amount.");
@@ -52,10 +62,10 @@ while (running)
 
             if (withdraw > 0)
             {
-                if (withdraw <= balance)
+                if (withdraw <= current.Balance)
                 {
-                    balance -= withdraw;
-                    Console.WriteLine($"Withdrew: {withdraw}, New Balance is: {balance}");
+                    current.Balance -= withdraw;
+                    Console.WriteLine($"Withdrew: {withdraw}, New Balance is: {current.Balance}");
                 }
                 else
                 {
@@ -76,4 +86,11 @@ while (running)
             Console.WriteLine("Invalid choice. Please try again.");
             break;
     }
+}
+
+// The blueprint
+class Account
+{
+    public string Name { get; set; }
+    public decimal Balance { get; set; }
 }
